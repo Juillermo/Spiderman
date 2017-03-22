@@ -4,6 +4,8 @@
 #
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
+#
+# I didn't do anything in here. I found it like this already.
 
 from scrapy import signals
 

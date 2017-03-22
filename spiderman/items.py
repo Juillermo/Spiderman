@@ -7,8 +7,8 @@
 
 import scrapy
 
-
-class TutorialItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
+class MundoItem(scrapy.Item):
+    # fields of each article. Self-explanatory.
+    Title = scrapy.Field()
+    Body = scrapy.Field()
     pass
