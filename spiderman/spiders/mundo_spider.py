@@ -16,6 +16,8 @@ class MundoSpider(scrapy.Spider):
 
     def cont_parse(self, response):
 	# enter the articles of the section
+	#head = response.xpath('//*[@itemprop="headline"]/a/@href').extract()
+	#yield scrapy.Request(response.urljoin(head[0]), callback=self.parse)
         for headline in response.xpath('//*[@itemprop="headline"]/a/@href').extract():
             yield scrapy.Request(response.urljoin(headline), callback=self.parse)
 
@@ -27,24 +29,21 @@ class MundoSpider(scrapy.Spider):
 	return l.load_item()
 
 
- #
+
 #   ---------
 #   Garbage
 #   ---------
+
+# #For parsing only the first article of each section-------------
+#
+#   def cont_parse(self, response):
+#	head = response.xpath('//*[@itemprop="headline"]/a/@href').extract()
+#	yield scrapy.Request(response.urljoin(head[0]), callback=self.parse)
+
+# #Exporting the parse elements in a json------------
 #
 #	yield {
 #		'Title': response.xpath('//*[@itemprop="headline"]/text()').extract_first(),
- #               'Body': response.xpath('//div[@itemprop="articleBody"]/p[not(@*)]/descendant-or-self::*/text()').extract(),
+#               'Body': response.xpath('//div[@itemprop="articleBody"]/p[not(@*)]/descendant-or-self::*/text()').extract(),
 #            }
 
-#    def ini_parse(self, response):
-#	for href in response.xpath('//*[@data-section]/a/@href').extract():
- #           yield scrapy.Request(response.urljoin(href), callback=self.parse)
-#
- #   def parse(self, response):
-  #      for headline in response.xpath('//*[@itemprop="headline"]/a'):
-   #         yield {
-	#	'section': response.xpath('//title/text()').extract_first(),
-         #       'text': headline.xpath('./text()').extract_first(),
-	#	'link': headline.xpath('./@href').extract_first(),
-         #   }

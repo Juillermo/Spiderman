@@ -15,11 +15,26 @@ class MundoPipeline(object):
 
 
     def process_item(self, item, spider):
+	
+	# collapse body
 
-	doc = {
-	    'Title': item['Title'],
-    	    'Body': item['Body'],
+	body = ''
+	for el in item['Body']:
+		body = body + el
+
+	doc = { 'Title': item['Title'][0], 'Body': body }
+	
+
+	# check whether doesn't exist article with same title and send it
+
+	query = {
+		"query":{"match_phrase":{"Title":doc['Title']}},
+		"_source":"Title",
+		"size":1
 	}
 
-	res = self.es.index(index="el-mundo", doc_type='Article', body=doc) # send to database
+	res = self.es.search(index="el-mundo", body=query)
+
+	if not res['hits']['total']:
+		res = self.es.index(index="el-mundo", doc_type='Article', body=doc) # send to database
         return item
